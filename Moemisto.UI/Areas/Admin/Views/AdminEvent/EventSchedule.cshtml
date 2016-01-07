@@ -1,0 +1,43 @@
+﻿@model Moemisto.UI.Areas.Admin.Models.AdminEventScheduleVm
+<h2>Розклад до @Model.EventTitle</h2>
+
+<div id="scheduleItemBox">
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <button type="button" class="btn btn-primary" onclick="editSchedule(0)">Додати запис</button>
+        <div id="scheduleListBox">
+            @{
+                Html.RenderAction("ScheduleList", new { eventId = Model.EventId });
+            }
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+    function placesTypeGroupChange(typeGroupId, self) {
+        $("#placeTypesBox").load('@Url.Action("PlaceTypeBox")' + '?typegroupid=' + typeGroupId);
+        placesByTypeChange(0, typeGroupId);
+
+        $('#placegroupCaption').text($(self).text());
+    }
+
+    function placesByTypeChange(typeId, typeGroupId, self) {
+        $("#placesByTypeBox").load('@Url.Action("PlacesByType")' + '?typeId=' + typeId + '&typegroupid=' + typeGroupId + '&scheduleid=0');
+        $('#placetypeCaption').text($(self).text());
+    }
+
+    function editSchedule(scheduleId) {
+        $("#scheduleItemBox").load('@Url.Action("EventScheduleItem")' + '?scheduleId=' + scheduleId + '&eventId=@Model.EventId', function () {
+            $('#editScheduleModal').modal('show');
+        });
+    }
+
+    function removeSchedule(scheduleId) {
+        if (confirm("Видалити запис розкладу?")) {
+            $("#scheduleListBox").load('@Url.Action("ScheduleRemove")' + '?scheduleId=' + scheduleId + '&eventId=@Model.EventId');
+        }
+    }
+    </script>
+}

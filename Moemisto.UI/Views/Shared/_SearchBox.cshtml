@@ -1,0 +1,9 @@
+﻿@using (Html.BeginForm("Index", "Search", FormMethod.Get))
+{
+    <div class="input-group">
+        <input name="query" type="text" class="form-control input-sm" placeholder="Шукати" maxlength="50">
+        <span class="input-group-btn">
+            <button class="btn btn-sm" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+        </span>
+    </div>
+}

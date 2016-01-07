@@ -1,0 +1,220 @@
+﻿// My variables there
+@import "bootstrap-vars.less";
+
+// Використовуємо змінні для вказання типових значень
+@mainTextColor: @brand-primary;
+
+body {
+    padding: 0;
+    font-family: Arial, Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 14px;
+    color: black;
+    margin: 0;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+.menuBottomText {
+    font-size: 0.8em;
+    color: @mainTextColor;
+}
+
+.menuTopText {
+    font-size: 1.8em;
+    color: @mainTextColor;
+}
+.menuUl {
+    text-align: center;
+}
+
+.loginIndex {
+    font-size: 1.2em;
+    color: #fca61b;   
+}
+
+img{
+    font-size: 8px;
+}
+
+h1 {
+    font-size: 1.8em;
+    color: @mainTextColor; 
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+h2 {
+    font-size: 1.6em;
+    color: @mainTextColor; 
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+h3 {
+    font-size: 1.0em;
+    color: @mainTextColor; 
+    font-weight: bold;
+}
+h6 {
+    font-size: 11px;
+}
+a.class1:link	{ color: white }
+a.class1:visited	{ color :white }
+a.class1:active	{ color: white }
+a.class1:hover	{ color: white }
+.footer1 {
+    font-size: 0.9em;
+    color: #636060; 
+    text-align:justify;
+    
+}
+
+.divmid { 
+  display: inline-block;
+  float: none;
+  vertical-align: middle;
+}
+.divText {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align:justify;
+}
+
+.eventBox {
+    height: 310px;
+    position: relative;
+}
+.eventImage {
+    max-height: 170px;
+}
+
+.eventBoxCaption {
+    position: absolute; top: 60%; left: 7px;  padding-right: 7px;
+}
+.newsBox {
+    height: 310px;
+    position: relative;
+}
+.newsImage {
+    max-height: 160px;
+}
+.newsBoxCaption {
+    position: absolute; top: 55%; left: 7px;  
+    padding-right: 7px;
+}
+.newsDetailesHeader {
+  border: 0;
+  outline: 0;
+  vertical-align: baseline;
+  background: transparent;
+  background-color: #043213;
+  opacity: 0.4; 
+  filter: alpha(Opacity=40); 
+  position: absolute;bottom: 0;
+  height: 70px;
+  width: 100%;
+}
+.newsDetailesHeaderText {
+  color: white;
+  position: absolute;
+  left: 10px;
+  bottom: 3px;
+}
+.newsDetailesHeaderDate {
+  color: white;
+  position: absolute;
+  left: 10px;
+  bottom: 5px;
+  font-size: 0.8em;
+}
+.darkGreenColor {
+    color: @mainTextColor !important;
+}
+.newsPreText {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+.newsText {
+   
+}
+.adRightBox{
+    float: right;
+    width: 300px;
+    height: 250px;
+    margin: 5px 0 0 20px;
+}
+.newsListPicture {
+    width: 70px;
+}
+.bgGrey {
+    background-color: floralwhite;
+}
+.articlesListPicture {
+    width: 150px;
+}
+.divFooter {
+    margin: 10px 0 0 0; 
+}
+.menuFooterBold {
+    color: @mainTextColor;
+    font-weight:bolder;
+}
+.menuFooter {
+    color: @mainTextColor;
+}
+.cell{
+    position:relative;
+}
+.cell div{
+    position:absolute;
+    top:50%;
+    left:50%;
+    margin-top:0;
+    margin-left:0;
+}
+.placePic{
+    height:210px;
+}
+.placeListPic {
+    width: 64px;
+}
+.share-buttons{
+    margin-top: 10px;
+}
+.fb-share-button{
+    line-height: 10px;
+}
+
+ /* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+ 
+.field-validation-valid {
+    display: none;
+}
+ 
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+ 
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+ 
+.validation-summary-errors {
+    color: #b94a48;
+}
+ 
+.validation-summary-valid {
+    display: none;
+}

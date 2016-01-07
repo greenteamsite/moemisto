@@ -1,0 +1,89 @@
+﻿@model Moemisto.UI.Areas.Admin.Models.AdminEventIndexVm
+
+<h2>Події</h2>
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("CreateEvent", "AdminEvent", FormMethod.Post, new { @class = "form-inline" }))
+        {
+            <div class="form-group">
+                <input id="enablingDateFilter" type="checkbox" checked="checked" style="width: 50px; margin-top: 0;" title="останні / на дату" class="form-control" />
+                <div class='input-group date' id='datetimepicker1'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+                @Html.DropDownList("typeFilter", Model.EventTypes, new { @class = "form-control" })
+                    <input id="searchEventText" type="text" class="form-control" />
+                <button disabled id="searchEventBtn" type="button" class="btn btn-success"><span class="glyphicon glyphicon-search">Знайти</span></button>
+                <button disabled id="searchEventClearBtn" type="button" class="btn btn-warning"><span class="glyphicon glyphicon-refresh"></span></button>
+                <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-plus">Створити подію</span></button>
+
+            </div>
+        }
+        <div id="eventsBox" style="margin-top: 15px;">
+            @{
+                Html.RenderAction("EventsBox");
+            }
+        </div>
+
+    </div>
+</div>
+        @section scripts {
+            <script>
+                $(function() {
+                    var dp = $('#datetimepicker1').datetimepicker({
+                        format: 'DD.MM.YYYY',
+                        defaultDate: new Date(),
+                        locale: 'uk'
+                    });
+
+                    dp.data("DateTimePicker").disable();
+
+                    var loadEventsBox = function(eventDate, eventTypeId, searchStr) {
+                        $('body').loader('show');
+                        $("#eventsBox").load('@Url.Action("EventsBox")' + '?eventDate=' + eventDate + '&eventTypeId=' + eventTypeId + '&searchStr=' + searchStr, function() {
+                            $('body').loader('hide');
+                        });
+                    }
+                    var loadEventByTypeDate = function() {
+                        var eventDate = "";
+                        if (!$("#enablingDateFilter").prop("checked")) {
+                            eventDate = dp.data("DateTimePicker").date().format("DD.MM.YYYY");
+                        }
+                        var eventTypeId = $("#typeFilter").val();
+                        loadEventsBox(eventDate, eventTypeId, "");
+                    }
+                    var searchEvent = function() {
+                        var searchStr = $("#searchEventText").val();
+                        loadEventsBox("", "", searchStr);
+                        $('#searchEventClearBtn').prop('disabled', false);
+                    }
+
+                    $("#typeFilter").change(loadEventByTypeDate);
+                    dp.on("dp.change", loadEventByTypeDate);
+                    $("#enablingDateFilter").change(function() {
+                        if (this.checked) {
+                            dp.data("DateTimePicker").disable();
+                            loadEventByTypeDate();
+                        } else {
+                            dp.data("DateTimePicker").enable();
+                            loadEventByTypeDate();
+                        }
+                    });
+                    $("#searchEventBtn").click(searchEvent);
+                    $("#searchEventText").keyup(function (self) {
+                        if ($(self.target).val().length >= 3) {
+                            $('#searchEventBtn').prop('disabled', false);
+                        } else {
+                            $('#searchEventBtn').prop('disabled', true);
+                        }
+                    });
+                    $("#searchEventClearBtn").click(function () {
+                        loadEventByTypeDate();
+                        $("#searchEventText").val("");
+                        $('#searchEventBtn').prop('disabled', true);
+                    });
+                });
+            </script>
+        }

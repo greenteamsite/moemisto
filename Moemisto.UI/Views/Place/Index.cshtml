@@ -1,0 +1,10 @@
+﻿@model Moemisto.UI.Models.PlaceIndexVm
+@{
+    ViewBag.Title = "База закладів Києва";
+}
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Головна", "Index", "Home")</li>
+    <li class="active">Місця Києва</li>
+</ol>
+           
+@Html.DisplayFor(m => m.Groups, "PlaceGroupBox")

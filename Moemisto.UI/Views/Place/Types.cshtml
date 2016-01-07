@@ -1,0 +1,11 @@
+﻿@model Moemisto.UI.Models.PlaceTypesVm
+@{
+    ViewBag.Title = Model.GroupTitle + " - місця Києва";
+}
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Головна", "Index", "Home")</li>
+    <li>@Html.ActionLink("Місця Києва", "Index", "Place")</li>
+    <li class="active">@Model.GroupTitle</li>
+</ol>
+
+@Html.DisplayFor(m => m.Types, "PlaceTypeBox")

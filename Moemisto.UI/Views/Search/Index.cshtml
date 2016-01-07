@@ -1,0 +1,15 @@
+﻿@model Moemisto.UI.Models.SearchIndexVm
+@{
+    ViewBag.Title = "Результати пошуку";
+}
+<h1>Результати пошуку</h1>   
+@Scripts.Render("~/bundles/pagination")      
+<div id="searchResultBox">
+    @{
+        Html.RenderAction("SearchResults", new { page = 1 });
+    }
+</div>
+@if (Model.Pagination != null)
+{
+    @Html.Partial("_PagesBox", Model.Pagination)
+}

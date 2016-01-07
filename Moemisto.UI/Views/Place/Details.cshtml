@@ -1,0 +1,72 @@
+﻿@model Moemisto.UI.Models.PlaceDetailsVm
+@{
+    ViewBag.Title = @Model.Title;
+}
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Головна", "Index", "Home")</li>
+    <li>@Html.ActionLink("Місця Києва", "Index", "Place")</li>
+    <li>@Html.ActionLink(Model.GroupTitle, "Types", new { groupUrl = Model.GroupUrl })</li>
+    <li>@Html.ActionLink(Model.TypeTitle, "List", new{ groupUrl = Model.GroupUrl, typeUrl = Model.TypeUrl })</li>
+    <li class="active">@Model.Title</li>
+</ol>
+
+<div class="row">
+    <div class="col-md-12">
+        <article itemscope itemtype="@Model.MicroDataItemType">
+            <div style="background: url(@Model.PosterUrl); background-repeat: no-repeat; -ms-background-size: cover; background-size: cover; height: 0; padding-bottom: 50%; position: relative; padding-bottom: 50%; background-position: center;">
+                <div class="newsDetailesHeader"></div>
+                <h1 itemprop="name" class="newsDetailesHeaderText">@Model.Title</h1>
+                <span itemprop="address" class="newsDetailesHeaderDate">@Model.Address</span>
+            </div>
+            <div class="divText">
+                @if (!String.IsNullOrEmpty(Model.SiteUrl))
+                {
+                    <h3 style="display: inline">Сайт:</h3> <a href="@Model.SiteUrl" target="_blank">@Model.SiteUrl</a><br />
+                }
+                <h3 style="display: inline">Телефон:</h3> @Model.Phone<br/>
+                @if (!String.IsNullOrEmpty(Model.Metro))
+                {
+                    <h3 style="display: inline">Найближче метро:</h3>
+                    @Model.Metro<br/>
+                }
+                @if (!String.IsNullOrEmpty(Model.MapsUrl))
+                {
+                    <a href="@Model.MapsUrl">
+                        <h3 style="display: inline">Місце на мапі</h3> <span class="glyphicon glyphicon-globe"></span>
+                    </a>
+                    <br/>
+                }
+                @if (!String.IsNullOrEmpty(Model.Cost))
+                {
+                    <h3 style="display: inline">Вартість квитків:</h3>
+                    @Model.Cost
+                }
+            </div>
+            <div class="divText"><span itemprop="description" class="newsText">@Html.Raw(Model.Info)</span></div>
+            <meta itemprop="image" content="@string.Format("http://moemisto.com.ua{0}", Model.PosterSmallUrl)"/>
+        </article>
+    </div>
+</div>
+@Html.Partial("Social/_ShareButtons")
+@if (Model.PlaceEvents.Count > 0)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <h2>@Html.ActionLink(@Model.Title + ": всі події", "Index", "Event")</h2>
+            @Html.DisplayFor(m => m.PlaceEvents)
+        </div>
+    </div>
+}
+@if (Model.OtherPlaces.Count > 0)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <h2>
+                Інші @Model.TypeTitle.ToLower() Києва
+            </h2>
+            @Html.DisplayFor(m => m.OtherPlaces)
+        </div>
+    </div>
+}
+
+

@@ -1,0 +1,76 @@
+﻿@using Moemisto.UI.Helpers
+@model Moemisto.UI.Models.EventDetailsVm
+@{
+    ViewBag.Title = @Model.Event.Title;
+}
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Головна", "Index", "Home")</li>
+    <li>@Html.ActionLink("Події в Києві", "Index", "Event")</li>
+    <li><a href="@string.Format("/afisha/type/{0}", Model.Event.CategoryUrl)">@Model.Event.CategoryUrlName</a></li>
+    <li class="active">@Model.Event.Title</li>
+</ol>
+
+<div class="row">
+    <div class="col-md-12">
+        <article itemscope itemtype="@Model.Event.MicroDataItemType">
+            <div class="row">
+                <div style="background: url(@Model.Event.PosterUrl); background-repeat: no-repeat; -ms-background-size: cover; background-size: cover; height: 0; padding-bottom: 50%; position: relative; padding-bottom: 50%; background-position: center;">
+                    <div class="newsDetailesHeader"></div>
+                    <h1 itemprop="name" class="newsDetailesHeaderText">@Model.Event.Title</h1>
+                </div>
+                @Html.Partial("_AdRightBox")
+                <div class="divText"><span itemprop="description" class="newsText">@Html.Raw(Model.Event.Info)</span></div>
+            </div>
+            @Html.Partial("Social/_ShareButtons")
+            @if (Model.Schedules.Any())
+            {
+                <h3>Розклад події:</h3>
+            }
+            <table class="table table-bordered">
+                <tbody>
+                    @foreach (var schedule in Model.Schedules)
+                    {
+                        <tr>
+                            <td itemprop="location" itemscope itemtype="http://schema.org/Place" rowspan="2">
+                                @Html.ActionLink(schedule.PlaceTitle, "Details", "Place", new { url = schedule.PlaceUrl }, new { itemprop = "url" })
+                                <meta itemprop="name" content="@schedule.PlaceTitle" />
+                                <meta itemprop="address" content="@schedule." />
+                            </td>
+                            @foreach (var startEvent in schedule.StartEventList)
+                            {
+                                <td>
+                                    @startEvent.Key
+                                </td>
+                            }
+                        </tr>
+                        <tr>
+                            @foreach (var startEvent in schedule.StartEventList)
+                            {
+                                <td>
+                                    @startEvent.Value
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <meta itemprop="image" content="@string.Format("http://moemisto.com.ua{0}", Model.Event.PosterSmallUrl)" />
+            <meta itemprop="startDate" content="@HelperForVm.ToIso8601(Model.StartDate)" />
+        </article>
+    </div>
+    @if (Model.OtherEvents.Count > 0)
+    {
+        <div class="row">
+            <h2>Інші цікаві події в Києві @DateTime.Today.ToString("dd MMMM")</h2>
+            @Html.DisplayFor(m => m.OtherEvents)
+        </div>
+    }
+    @*if(Model.PlaceEvents.Count > 0)
+        {
+            <div class="col-md-12">
+                <h2>@Html.ActionLink(Model.FirstPlaceTitle + ": всі події", "Index", "Event")</h2>
+                @Html.DisplayFor(m => m.PlaceEvents)
+            </div>
+        }
+    *@
+</div>

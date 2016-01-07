@@ -1,0 +1,22 @@
+﻿@model List<Moemisto.UI.Models.EventBaseVm>
+@foreach (var topEvent in Model)
+{
+    <div class="col-xs-6 col-md-3 col-sm-6">
+        <div class="thumbnail eventBox">
+            <a href="@Url.Action("Details", "Event", new { url = topEvent.TranslitUrl })" title="@topEvent.Title"><img src="@topEvent.PosterSmallUrl" alt="@(String.IsNullOrEmpty(topEvent.PosterSmallUrl) ? "" : topEvent.Title)" title="@topEvent.Title" class="eventImage"></a>
+            <div class="eventBoxCaption">
+                <h3>
+                    <a href="@Url.Action("Details", "Event", new {url = topEvent.TranslitUrl})">
+                        <span>@topEvent.CategoryName</span>
+                        <span>"@topEvent.Title"</span>
+                    </a>
+                </h3>
+                <p>@topEvent.ShortInfo</p>
+                <h6>
+                    <a href="@topEvent.PlaceUrl">@topEvent.PlaceName</a>
+                </h6>
+            </div>
+        </div>
+    </div>
+}
+

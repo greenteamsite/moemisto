@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords"
+          content="@ViewBag.Keywords">
+    <meta name="description"
+          content="@ViewBag.Description">
+    <title>@ViewBag.Title - Моє Місто</title>
+    <meta property="og:url" content="@(Request.Url == null ? string.Empty : Request.Url.AbsoluteUri)" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Моє Місто - @ViewBag.Title" />
+    <meta property="og:description" content="@ViewBag.Description" />
+    @if (@ViewBag.OgImage != null)
+    {
+        <meta property="og:image" content="@ViewBag.OgImage" />
+    }
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+
+<body style="min-width: 450px;">
+    <div id="fb-root"></div>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <a href="@Url.Action("Index", "Home")"><img width="270" src="/Images/logo.jpg" /></a>
+                </div>
+                <div class="col-md-8 col-sm-8 col-xs-12" style="margin-top: 10px;">
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        @*Html.Partial("_LoginPartial")*@
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        @Html.Partial("_SearchBox")
+                    </div>
+                </div>
+            </div>
+            <div class="navbar-header" style="margin-top: 10px;">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink(" ", "Index", "Home", new { area = "" }, new { @class = "navbar-brand glyphicon glyphicon-home darkGreenColor", style = "font-size: 33px; font-weight: bold;", title = "Головна сторінка" })
+            </div>
+            <div class="navbar-collapse collapse">
+                @{
+                    Html.RenderAction("TopMenu", "Home");
+                }
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        @Html.Partial("_AdBottomBox")
+        <hr />
+        <footer>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12 divFooter">
+                    @{
+                        Html.RenderAction("BottomMenu", "Home");
+                    }
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 divFooter">
+                    <span class="footer1">&copy; 2008-2015 "Моє Місто", &copy; 2015 Розробка сайту <a href="http://greenteam.site">Green Team</a>. За умови повного або часткового відтворення посилання (для інтернет-ресурсів - гіперпосилання) на <a href="http://www.moemisto.com.ua">www.moemisto.com.ua</a> є обов'язковим. Редакція не завжди поділяє точку зору авторів статей та не несе відповідальності за зміст матеріалів, що републікуються.</span>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 divFooter">
+                    <div class="col-lg-3 col-md-4 col-sm-5 col-xs-8">
+                        <a href="https://www.facebook.com/moemisto.com.ua" class="btn btn-social-icon btn-facebook"><i class="fa fa-facebook"></i></a>
+                        <a href="https://twitter.com/Moe_Misto" class="btn btn-social-icon btn-twitter"><i class="fa fa-twitter"></i></a>
+                        <a href="http://vk.com/public98599948" class="btn btn-social-icon btn-vk"><i class="fa fa-vk"></i></a>
+                        <a href="https://plus.google.com/u/0/107917073945484031239/about" class="btn btn-social btn-google" rel="author">Моє Місто</a>
+                    </div>
+                    <div class="col-lg-9 col-md-8 col-sm-7 col-xs-4">
+                        @Html.Partial("_ExternalCounters")
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/ajax")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/datepicker")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

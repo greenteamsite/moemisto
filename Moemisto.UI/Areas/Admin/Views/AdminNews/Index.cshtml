@@ -1,0 +1,61 @@
+﻿@model Moemisto.UI.Areas.Admin.Models.AdminNewsVm
+<h2>@ViewBag.Title</h2>
+
+<div class="row" style="padding-top: 10px;">
+    <div class='col-sm-4'>
+        <div class="form-group form-inline">
+            <button id="prevDateBtn" class="btn"><span class="glyphicon glyphicon-arrow-left"></span></button>
+            <div class='input-group date' id='datetimepicker1'>
+                <input type='text' class="form-control" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <button id="nextDateBtn" class="btn"><span class="glyphicon glyphicon-arrow-right"></span></button>
+        </div>
+    </div>
+    <div class='col-sm-3'>
+        @Html.DropDownList("typeFilter", Model.NewsTypes, new { @class = "form-control" })
+    </div>
+    <div class='col-sm-1'>
+        @using (Html.BeginForm("CreateNews","AdminNews", FormMethod.Post))
+        {
+            <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-plus">Створити матеріал</span></button>
+        }
+    </div>
+</div>
+<div class="row" id="newsBox">
+    @{
+        Html.RenderAction("NewsList");
+    }
+</div>
+
+
+@section scripts {
+    <script>
+        $(function () {
+            var dp = $('#datetimepicker1').datetimepicker({
+                format: 'DD.MM.YYYY',
+                defaultDate: new Date(),
+                locale: 'uk'
+            });
+            var loadNewsBox = function () {
+                var publishDate = dp.data("DateTimePicker").date().format("DD.MM.YYYY"),
+                    newsType = $("#typeFilter").val();
+
+                $("#newsBox").load('@Url.Action("NewsList")' + '?publishDate=' + publishDate + '&newsType=' + newsType);
+            }
+            $("#typeFilter").change(loadNewsBox);
+            dp.on("dp.change", loadNewsBox);
+
+            $("#prevDateBtn").click(function () {
+                var publishDate = dp.data("DateTimePicker").date().subtract(1, 'd');
+                dp.data("DateTimePicker").date(publishDate);
+            });
+            $("#nextDateBtn").click(function () {
+                var publishDate = dp.data("DateTimePicker").date().add(1, 'd');
+                dp.data("DateTimePicker").date(publishDate);
+            });
+        });
+    </script>
+}

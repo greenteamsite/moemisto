@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /News/LastNewsBox
+Disallow: /News/LastArticleBox
+Disallow: /News/LastNewsBoxByCategory
+Disallow: /cache/
+Disallow: /forum/
+Disallow: /News/Details/

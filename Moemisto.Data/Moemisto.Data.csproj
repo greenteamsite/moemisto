@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{ED6A8D19-120F-4A2D-8C9A-D102F784A2CF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Moemisto.Data</RootNamespace>
+    <AssemblyName>Moemisto.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EFCache, Version=1.0.0.0, Culture=neutral, PublicKeyToken=46c4868af4307d2c, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.Cache.1.0.0\lib\net45\EFCache.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Contexts\Admin\AdminHomeContext.cs" />
+    <Compile Include="Contexts\FeedContext.cs" />
+    <Compile Include="DbMmConfiguration.cs" />
+    <Compile Include="Contexts\Admin\AdminEventContext.cs" />
+    <Compile Include="Contexts\Admin\AdminNewsContext.cs" />
+    <Compile Include="Contexts\BaseContext.cs" />
+    <Compile Include="Contexts\SearchContext.cs" />
+    <Compile Include="Contexts\PlaceContext.cs" />
+    <Compile Include="Contexts\TravelContext.cs" />
+    <Compile Include="Contexts\NewsContext.cs" />
+    <Compile Include="Contexts\EventContext.cs" />
+    <Compile Include="Contexts\HomeContext.cs" />
+    <Compile Include="DbMmContext.cs" />
+    <Compile Include="DbInitializer.cs" />
+    <Compile Include="Entities\Article.cs" />
+    <Compile Include="Entities\ArticleSource.cs" />
+    <Compile Include="Entities\Category.cs" />
+    <Compile Include="Entities\Comment.cs" />
+    <Compile Include="Entities\Enums.cs" />
+    <Compile Include="Entities\EventSchedule.cs" />
+    <Compile Include="Entities\EventScheduleDateTime.cs" />
+    <Compile Include="Entities\Picture.cs" />
+    <Compile Include="Entities\PlaceTypeGroup.cs" />
+    <Compile Include="Entities\PlaceType.cs" />
+    <Compile Include="Entities\EventType.cs" />
+    <Compile Include="Entities\Event.cs" />
+    <Compile Include="Entities\Place.cs" />
+    <Compile Include="Migrations\201506291838496_InitialCreate.cs" />
+    <Compile Include="Migrations\201506291838496_InitialCreate.Designer.cs">
+      <DependentUpon>201506291838496_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507020524039_EventPictureFieldsChange.cs" />
+    <Compile Include="Migrations\201507020524039_EventPictureFieldsChange.Designer.cs">
+      <DependentUpon>201507020524039_EventPictureFieldsChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507022001275_AddArticleSource.cs" />
+    <Compile Include="Migrations\201507022001275_AddArticleSource.Designer.cs">
+      <DependentUpon>201507022001275_AddArticleSource.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507022036540_ArticleAddOldField.cs" />
+    <Compile Include="Migrations\201507022036540_ArticleAddOldField.Designer.cs">
+      <DependentUpon>201507022036540_ArticleAddOldField.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507080648582_AddTranslitUrl.cs" />
+    <Compile Include="Migrations\201507080648582_AddTranslitUrl.Designer.cs">
+      <DependentUpon>201507080648582_AddTranslitUrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507110834322_EventUpd1.cs" />
+    <Compile Include="Migrations\201507110834322_EventUpd1.Designer.cs">
+      <DependentUpon>201507110834322_EventUpd1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507111617404_UpdatePlace.cs" />
+    <Compile Include="Migrations\201507111617404_UpdatePlace.Designer.cs">
+      <DependentUpon>201507111617404_UpdatePlace.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507111913154_PlaceEvent_AddTranslite.cs" />
+    <Compile Include="Migrations\201507111913154_PlaceEvent_AddTranslite.Designer.cs">
+      <DependentUpon>201507111913154_PlaceEvent_AddTranslite.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507121418405_Upd1.cs" />
+    <Compile Include="Migrations\201507121418405_Upd1.Designer.cs">
+      <DependentUpon>201507121418405_Upd1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507121547161_AddPlace_PlaceOldTelId.cs" />
+    <Compile Include="Migrations\201507121547161_AddPlace_PlaceOldTelId.Designer.cs">
+      <DependentUpon>201507121547161_AddPlace_PlaceOldTelId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507221913143_Event_ShortInfoSetLen900.cs" />
+    <Compile Include="Migrations\201507221913143_Event_ShortInfoSetLen900.Designer.cs">
+      <DependentUpon>201507221913143_Event_ShortInfoSetLen900.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201508020703402_PlacePictures.cs" />
+    <Compile Include="Migrations\201508020703402_PlacePictures.Designer.cs">
+      <DependentUpon>201508020703402_PlacePictures.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509021827091_AddTitleOneToEvents.cs" />
+    <Compile Include="Migrations\201509021827091_AddTitleOneToEvents.Designer.cs">
+      <DependentUpon>201509021827091_AddTitleOneToEvents.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509161412352_AddToCategoryParrentUrl.cs" />
+    <Compile Include="Migrations\201509161412352_AddToCategoryParrentUrl.Designer.cs">
+      <DependentUpon>201509161412352_AddToCategoryParrentUrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509161431395_changeLengthTypes.cs" />
+    <Compile Include="Migrations\201509161431395_changeLengthTypes.Designer.cs">
+      <DependentUpon>201509161431395_changeLengthTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\MmConfiguration.cs" />
+    <Compile Include="NoEntities\GroupDateEvent.cs" />
+    <Compile Include="NoEntities\SiteMapItemDb.cs" />
+    <Compile Include="NoEntities\FeedItem.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201506291838496_InitialCreate.resx">
+      <DependentUpon>201506291838496_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507020524039_EventPictureFieldsChange.resx">
+      <DependentUpon>201507020524039_EventPictureFieldsChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507022001275_AddArticleSource.resx">
+      <DependentUpon>201507022001275_AddArticleSource.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507022036540_ArticleAddOldField.resx">
+      <DependentUpon>201507022036540_ArticleAddOldField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507080648582_AddTranslitUrl.resx">
+      <DependentUpon>201507080648582_AddTranslitUrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507110834322_EventUpd1.resx">
+      <DependentUpon>201507110834322_EventUpd1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507111617404_UpdatePlace.resx">
+      <DependentUpon>201507111617404_UpdatePlace.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507111913154_PlaceEvent_AddTranslite.resx">
+      <DependentUpon>201507111913154_PlaceEvent_AddTranslite.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507121418405_Upd1.resx">
+      <DependentUpon>201507121418405_Upd1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507121547161_AddPlace_PlaceOldTelId.resx">
+      <DependentUpon>201507121547161_AddPlace_PlaceOldTelId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507221913143_Event_ShortInfoSetLen900.resx">
+      <DependentUpon>201507221913143_Event_ShortInfoSetLen900.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508020703402_PlacePictures.resx">
+      <DependentUpon>201508020703402_PlacePictures.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509021827091_AddTitleOneToEvents.resx">
+      <DependentUpon>201509021827091_AddTitleOneToEvents.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509161412352_AddToCategoryParrentUrl.resx">
+      <DependentUpon>201509161412352_AddToCategoryParrentUrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509161431395_changeLengthTypes.resx">
+      <DependentUpon>201509161431395_changeLengthTypes.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Sqls\ChangeToTranslit.sql" />
+    <Content Include="Sqls\GetSchedules.sql" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

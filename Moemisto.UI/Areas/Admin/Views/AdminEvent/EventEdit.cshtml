@@ -1,0 +1,159 @@
+﻿@model Moemisto.UI.Areas.Admin.Models.AdminEventEditVm
+
+<h2>@ViewBag.Title</h2>
+<div class="row">
+    <form id="mainForm" name="mainForm">
+        @Html.HiddenFor(m => m.Event.EventId)
+        <div class="col-md-8">
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.Event.Title, new { placeholder = "Тема матеріалу", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Event.Title)
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.DropDownListFor(m => m.Event.TypeId, Model.EventTypes, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.Event.ShortInfo, new { placeholder = "Короткий текст", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Event.ShortInfo)
+            </div>
+        </div>
+    </form>
+    <div class="col-md-12">
+        <div id="pictureBox" class="panel panel-success" style="margin-left: -15px; margin-right: -15px;">
+            <div class="panel-heading" style="padding: 5px;">Менеджер картинок</div>
+            <div class="panel-body" style="padding-top: 0;">
+                <div id="filePictureListBox" class="col-md-4">
+                    @using (Ajax.BeginForm("AddPictures", new { eventId = Model.Event.EventId }, new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data", id = "addPictureForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            <h4><span class="label label-success">Верхня картинка:</span></h4>
+                            <div id="pictureBox1">
+                                <input type="file" name="pictureTop" accept="image/*" class="form-control">
+                            </div>
+                        </div>
+                        <div class="progress progress-striped">
+                            <div class="progress-bar progress-bar-success">0%</div>
+                        </div>
+                        <div class="form-group">
+                            <button id="addPictureBtn" type="submit" class="btn btn-success">Додати</button>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-8">
+                    <h4><span class="label label-success">Додана картинка:</span></h4>
+                    <div id="picturePreViewBox" class="col-md-4" style="padding-top: 30px;">
+                        @{
+                            Html.RenderPartial("_PicturePreView", Model.Event);
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Html.ValidationMessageFor(m => m.Event.Info)
+        <div class="form-group">
+            @Html.EditorFor(m => m.Event.Info, "tinymce_adminEvent", new { eventId = Model.Event.EventId, form = "mainForm" })
+        </div>
+        <div class="col-md-4 col-sm-8 col-xs-8">
+            <button type="button" onclick="saveEvent(false)" class="btn btn-info">Зберегти</button>
+            <button type="button" onclick="saveEvent(true)" class="btn btn-primary">Зберегти і до розкладу</button>
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-4 col-md-offset-6 col-sm-offset-0">
+            <button type="button" onclick="removeEvent()" class="btn btn-danger">Видалити</button>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts {
+    <script>
+        $(function() {
+            $('#datetimepicker1').datetimepicker({
+                format: 'DD.MM.YYYY',
+                locale: 'uk'
+            });
+            // === Picture manager
+            var bar = $('.progress-bar');
+            var percent = $('.progress-bar');
+
+            $('#addPictureForm').ajaxForm({
+                beforeSend: function() {
+                    var percentVal = '0%';
+                    bar.width(percentVal);
+                    percent.html(percentVal);
+                },
+                uploadProgress: function(event, position, total, percentComplete) {
+                    var percentVal = percentComplete + '%';
+                    bar.width(percentVal);
+                    percent.html(percentVal);
+                },
+                success: function() {
+                    var percentVal = '100%';
+                    bar.width(percentVal);
+                    percent.html(percentVal);
+                },
+                complete: function(xhr) {
+                    $("#picturePreViewBox").html(xhr.responseText);
+                    // Reset file inputs
+                    document.getElementById("pictureBox1").innerHTML = document.getElementById("pictureBox1").innerHTML;
+                    $("input:file").change(function() {
+                        var percentVal = '0%';
+                        bar.width(percentVal);
+                        percent.html(percentVal);
+                    });
+                }
+            });
+
+        });
+
+        function saveEvent(goToList) {
+            if ($("#mainForm").valid()) {
+                $.post("@Url.Action("EventEdit")", $("#mainForm").serialize() + "&Event.Info=" + tinyMCE.activeEditor.getContent())
+                    .done(function (data) {
+                        debugger;
+                        if (goToList) {
+                            window.location.href = "@Url.Action("EventSchedule", new {eventid = Model.Event.EventId})";
+                        } else {
+                            alert("Збережено вдало.");
+                        }
+                    })
+                    .fail(function(data) {
+                        console.error(data);
+                        alert("Невдале збереження!");
+                    });
+            } else {
+                alert("Невдале збереження! Перевірте правильність заповнення даних.");
+            }
+        }
+
+        function removeEvent() {
+            if (confirm("Видалити матеріал: " + "@Model.Event.Title?")) {
+                $.post("@Url.Action("EventRemove")", { eventId: '@Model.Event.EventId' })
+                    .done(function() {
+                        window.location.href = "@Url.Action("Index")";
+                    })
+                    .fail(function(data) {
+                        console.error(data);
+                        alert("Невдале видалення!");
+                    });
+            }
+        }
+
+        function removePicture(eventId) {
+            if (confirm("Видалити картинку?")) {
+                $.get("@Url.Action("RemovePicture")", { eventId: eventId })
+                    .done(function(data) {
+                        if (data == "True") {
+                            $("#picturePreViewBox").html("");
+                        }
+                    });
+            }
+        }
+
+    </script>
+}

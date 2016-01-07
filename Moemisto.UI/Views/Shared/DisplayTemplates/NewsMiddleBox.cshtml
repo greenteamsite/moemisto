@@ -1,0 +1,14 @@
+﻿@model List<Moemisto.UI.Models.ArticleBaseVm>
+@foreach (var lastNews in Model)
+{
+    <div class="col-xs-12 col-md-3 col-sm-6">
+        <div class="thumbnail newsBox">
+            <a href="@Url.Action("Details", "News", new { url = lastNews.TranslitUrl })" title="@lastNews.TitleShort"><img src="@lastNews.PictureUrlSmall" alt="@(String.IsNullOrEmpty(lastNews.PictureUrlSmall) ? "" : lastNews.Title)" title="@lastNews.Title" class="newsImage"></a>
+            <div class="newsBoxCaption">
+                <h3>@Html.ActionLink(lastNews.TitleShort, "Details", "News", new { url = lastNews.TranslitUrl }, new { })</h3>
+                <p>@lastNews.ShortInfoCutted(120)</p>
+            </div>
+        </div>
+    </div>
+}
+<input class="last-news-id" hidden value="@Model.Select(s => s.ArticleId).Last()" />

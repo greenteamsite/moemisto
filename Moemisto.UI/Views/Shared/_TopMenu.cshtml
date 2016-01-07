@@ -1,0 +1,66 @@
+﻿@model Moemisto.UI.Models.HomeIndexBottomMenuVm
+
+<ul class="nav navbar-nav menuUl">
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="menuTopText">Новини</span><br /><span class="menuBottomText">Статті, новини</span>
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="@Url.Action("Index", "News")"><span class="menuFooter">Всі новини та статті</span></a></li>
+            <li role="separator" class="divider"></li>
+            @foreach (var item in Model.News)
+            {
+                <li><a href="@item.Key"><span class="menuFooter">@item.Value</span></a></li>
+            }
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="menuTopText">Розважитись</span><br /><span class="menuBottomText">Афіша подій</span>
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="@Url.Action("Index", "Event")"><span class="menuFooter">Вся афіша</span></a></li>
+            <li role="separator" class="divider"></li>
+            @foreach (var item in Model.Events)
+            {
+                <li><a href="@item.Key"><span class="menuFooter">@item.Value</span></a></li>
+            }
+        </ul>
+    </li>
+   @* <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="menuTopText">Подорожувати</span><br /><span class="menuBottomText">Куди поїхати з Києва</span>
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="@Url.Action("Index", "Travel")"><span class="menuFooter">Всі подорожі</span></a></li>
+            <li role="separator" class="divider"></li>
+            @foreach (var item in Model.Travels)
+            {
+                <li><a href="@item.Key"><span class="menuFooter">@item.Value</span></a></li>
+            }
+        </ul>
+    </li>
+*@
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="menuTopText">Знайти</span><br /><span class="menuBottomText">Місця</span>
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="@Url.Action("Index", "Place")"><span class="menuFooter">Всі місця</span></a></li>
+            <li role="separator" class="divider"></li>
+            @foreach (var item in Model.Places)
+            {
+                <li><a href="@item.Key"><span class="menuFooter">@item.Value</span></a></li>
+            }
+        </ul>
+    </li>
+    <li>
+        <a href="@Url.Action("About", "Home")">
+            <span class="menuTopText">Про нас</span><br /><span class="menuBottomText">Контакти, реклама</span>
+        </a>
+    </li>
+</ul>

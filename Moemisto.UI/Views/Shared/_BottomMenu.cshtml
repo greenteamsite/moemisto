@@ -1,0 +1,54 @@
+﻿@model Moemisto.UI.Models.HomeIndexBottomMenuVm
+<div class="col-md-6 col-sm-12 col-xs-12 dropup">
+    <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span class="menuFooterBold">Читати </span><span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            @foreach (var item in Model.News)
+            {
+                <li><a href="@item.Key"><span class="menuFooter">@item.Value</span></a></li>
+            }
+        </ul>
+    </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span class="menuFooterBold">Розважитись</span><span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            @foreach (var item in Model.Events)
+            {
+                <li><a href="@item.Key"><span class="menuFooter">@item.Value</span></a></li>
+            }
+        </ul>
+    </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span class="menuFooterBold">Подорожувати </span><span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            @foreach (var item in Model.Travels)
+            {
+                <li><a href="@item.Key"><span class="menuFooter">@item.Value</span></a></li>
+            }
+        </ul>
+    </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span class="menuFooterBold">Місця </span><span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            @foreach (var item in Model.Places)
+            {
+                <li><a href="@item.Key"><span class="menuFooter">@item.Value</span></a></li>
+            }
+        </ul>
+    </div>
+    <div class="btn-group">
+        <a href="http://moemisto.com.ua/about" class="btn btn-default dropdown-toggle menuFooterBold">
+            Про нас
+        </a>
+    </div>
+
+</div>
+

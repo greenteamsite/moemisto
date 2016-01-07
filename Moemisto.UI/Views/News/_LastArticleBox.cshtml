@@ -1,0 +1,19 @@
+﻿@model List<Moemisto.UI.Models.ArticleBaseVm>
+
+@foreach (var news in Model)
+{
+    <ul class="media-list">
+        <li class="media">
+            <div class="media-left">
+                <a href="@Url.Action("Details", "News", new { url = news.TranslitUrl })" title="@news.Title">
+                    <img class="media-object newsListPicture" src="@news.PictureUrlSmall" alt="@(String.IsNullOrEmpty(news.PictureUrlSmall) ? "" : news.Title)" title="@news.Title">
+                </a>
+            </div>
+            <div class="media-body">
+                <h3 class="media-heading">@Html.ActionLink(news.Title, "Details", "News", new { url = news.TranslitUrl }, new { })</h3>
+                <p>@news.ShortInfo</p>
+            </div>
+        </li>
+    </ul>
+}
+

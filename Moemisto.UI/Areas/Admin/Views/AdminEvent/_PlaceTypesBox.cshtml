@@ -1,0 +1,15 @@
+﻿@model List<SelectListItem>
+<div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <span style="font-size: small;" id="placetypeCaption">@Model.Select(s => s.Text).FirstOrDefault()</span>
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" style="font-size: small;" aria-labelledby="dropdownMenu1">
+        @foreach (var placetype in Model)
+        {
+            <li><a href="#" onclick="placesByTypeChange('@placetype.Value', 0, this)">@placetype.Text</a></li>
+        }
+    </ul>
+</div>
+
+

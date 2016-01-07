@@ -1,0 +1,13 @@
+﻿@model List<Moemisto.UI.Models.PlaceBaseVm>
+@foreach (var place in Model)
+{
+    <div class="col-xs-6 col-md-3 col-sm-6">
+        <div class="thumbnail eventBox">
+            <a href="@Url.Action("Details", "Place", new { url = place.TranslitUrl })" title="@place.Title"><img src="@place.PosterSmallUrl" alt="@(String.IsNullOrEmpty(place.PosterSmallUrl) ? "" : place.Title)" title="@place.Title" class="eventImage"></a>
+            <div class="eventBoxCaption">
+                <h3>@Html.ActionLink(place.Title, "Details", "Place", new { url = place.TranslitUrl }, new { })</h3>
+            </div>
+        </div>
+    </div>
+}
+

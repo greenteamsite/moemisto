@@ -1,0 +1,8 @@
+﻿@model Moemisto.UI.Models.EventBaseVm
+
+<div class="form-group">
+    <img src="@Model.PosterUrl" style="width: 250px;" />
+</div>
+<div class="form-group">
+    <button onclick="removePicture('@Model.EventId')" class="btn btn-danger">Видалити</button>
+</div>

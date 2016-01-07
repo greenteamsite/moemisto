@@ -1,0 +1,208 @@
+﻿@model Moemisto.UI.Areas.Admin.Models.AdminNewsEditVm
+<h2>@ViewBag.Title</h2>
+<div class="row">
+    <form id="mainForm" name="mainForm">
+        @Html.HiddenFor(m => m.ArticleId)
+        @Html.HiddenFor(m => m.DateCreate)
+        <div class="col-md-12">
+            <div class="col-sm-3 col-md-4" style="margin-left: -15px">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.DatePublish)
+                    <div class='input-group date' id='datetimepicker1'>
+                        @Html.TextBoxFor(m => m.DatePublish, new { @class = "form-control" })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4 col-md-3" style="padding-left: 30px">
+                <div class="form-group">
+                    @Html.Label("Категорія - Тип")
+                    @Html.DropDownListFor(m => m.CategoryId, Model.NewsCategoryTypes, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-sm-3 col-md-2" style="padding-left: 30px">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Top)
+                    @Html.CheckBoxFor(m => m.Top, new { @class = "form-control", style = "width:50px; margin-top: 0;" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.Title, new { placeholder = "Тема матеріалу", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Title)
+            </div>
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.TitleShort, new { placeholder = "Тема матеріалу коротка (54 символів)", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.TitleShort)
+            </div>
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.ShortInfo, new { placeholder = "Короткий текст", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ShortInfo)
+            </div>
+        </div>
+    </form>
+        <div class="col-md-12">
+            <div id="pictureBox" class="panel panel-success" style="margin-left: -15px; margin-right: -15px;">
+                <div class="panel-heading" style="padding: 5px;">Менеджер картинок</div>
+                <div class="panel-body" style="padding-top: 0;">
+                    <div id="filePictureListBox" class="col-md-4">
+                        @using (Ajax.BeginForm("AddPictures", new { articleId = Model.ArticleId }, new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data", id = "addPictureForm" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                <h4><span class="label label-success">Верхня картинка:</span></h4>
+                                <div id="pictureBox1">
+                                    <input type="file" name="pictureTop" accept="image/*" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <h4><span class="label label-info">Картинки для тексту:</span></h4>
+                                <div id="pictureBox2">
+                                    <input type="file" name="pictureText[0]" accept="image/*" class="form-control">
+                                </div>
+                                <div id="pictureBox3">
+                                    <input type="file" name="pictureText[1]" accept="image/*" class="form-control">
+                                </div>
+                                <div id="pictureBox4">
+                                    <input type="file" name="pictureText[2]" accept="image/*" class="form-control">
+                                </div>
+                            </div>
+                            <div class="progress progress-striped">
+                                <div class="progress-bar progress-bar-success">0%</div>
+                            </div>
+                            <div class="form-group">
+                                <button id="addPictureBtn" type="submit" class="btn btn-success">Додати</button>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-4">
+                        <h4><span class="label label-success">Додані картинки:</span></h4>
+                        <div id="pictureListBox">
+                            @{ Html.RenderAction("PictureList", new { articleId = Model.ArticleId }); }
+                        </div>
+                    </div>
+                    <div id="picturePreViewBox" class="col-md-4" style="padding-top: 30px;">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.EditorFor(m => m.Info, "tinymce_admin", new { articleId = Model.ArticleId, form = "mainForm" })
+
+            </div>
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.Tags, new { placeholder = "Теги (через кому)", @class = "form-control", form = "mainForm" })
+            </div>
+            <div class="col-md-4 col-sm-8 col-xs-8">
+                <button type="button" onclick="saveArticle(false)" class="btn btn-info">Зберегти</button>
+                <button type="button" onclick="saveArticle(true)" class="btn btn-primary">Зберегти і до списку</button>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-4 col-md-offset-6 col-sm-offset-0">
+                <button type="button" onclick="removeArticle()" class="btn btn-danger">Видалити</button>
+            </div>
+        </div>
+</div>
+
+    @section scripts {
+        <script>
+            $(function () {
+
+                $.validator.methods.date = function (value, element) {
+                    return this.optional(element) || moment(value, "DD.MM.YYYY HH:mm").isValid();
+                }
+
+                $('#datetimepicker1').datetimepicker({
+                    sideBySide: true,
+                    locale: 'uk',
+                    defaultDate: new Date()
+                });
+
+                // === Picture manager
+                var bar = $('.progress-bar');
+                var percent = $('.progress-bar');
+
+                $('#addPictureForm').ajaxForm({
+                    beforeSend: function() {
+                        var percentVal = '0%';
+                        bar.width(percentVal);
+                        percent.html(percentVal);
+                    },
+                    uploadProgress: function(event, position, total, percentComplete) {
+                        var percentVal = percentComplete + '%';
+                        bar.width(percentVal);
+                        percent.html(percentVal);
+                    },
+                    success: function() {
+                        var percentVal = '100%';
+                        bar.width(percentVal);
+                        percent.html(percentVal);
+                    },
+                    complete: function(xhr) {
+                        $("#pictureListBox").html(xhr.responseText);
+                        // Reset file inputs
+                        document.getElementById("pictureBox1").innerHTML = document.getElementById("pictureBox1").innerHTML;
+                        document.getElementById("pictureBox2").innerHTML = document.getElementById("pictureBox2").innerHTML;
+                        document.getElementById("pictureBox3").innerHTML = document.getElementById("pictureBox3").innerHTML;
+                        document.getElementById("pictureBox4").innerHTML = document.getElementById("pictureBox4").innerHTML;
+                        $("input:file").change(function() {
+                            var percentVal = '0%';
+                            bar.width(percentVal);
+                            percent.html(percentVal);
+                        });
+                    }
+                });
+
+            });
+
+            function saveArticle(goToList) {
+                if ($("#mainForm").valid()) {
+                    $.post("@Url.Action("NewsEdit")", $("#mainForm").serialize() + "&Info=" + tinyMCE.activeEditor.getContent())
+                        .done(function(data) {
+                            if (data === "true") {
+                                if (goToList) {
+                                    window.location.href = "@Url.Action("Index")";
+                                } else {
+                                    alert("Збережено вдало.");
+                                }
+                            } else {
+                                alert("Невдале збереження!");
+                            }
+                        })
+                        .fail(function(data) {
+                            console.error(data);
+                            alert("Невдале збереження!");
+                        });
+                } else {
+                    alert("Невдале збереження! Перевірте правильність заповнення даних.");
+                }
+            }
+
+            function removeArticle() {
+                if (confirm("Видалити матеріал: " + "@Model.Title?")) {
+                    $.post("@Url.Action("NewsRemove")", { id: '@Model.ArticleId' })
+                        .done(function() {
+                            window.location.href = "@Url.Action("Index")";
+                        })
+                        .fail(function(data) {
+                            console.error(data);
+                            alert("Невдале видалення!");
+                        });
+                }
+            }
+
+            function removePicture(pictureId) {
+                if (confirm("Видалити картинку?")) {
+                    $.get("@Url.Action("RemovePicture")", { pictureId: pictureId })
+                        .done(function(data) {
+                            if (data.toLowerCase() === "true") {
+                                $("#picturePreViewBox").html("");
+                                $("#pictureListBox").load('@Url.Action("PictureList")' + '?articleId=@Model.ArticleId');
+                            }
+                        });
+                }
+            }
+
+        </script>
+    }

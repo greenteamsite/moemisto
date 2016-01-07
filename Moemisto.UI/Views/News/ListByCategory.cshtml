@@ -1,0 +1,25 @@
+﻿@model Moemisto.UI.Models.NewsListByCategoryVm
+@{
+    ViewBag.Title = Model.CategoryTitle;
+}
+@Scripts.Render("~/bundles/pagination")
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Головна", "Index", "Home")</li>
+    <li class="active">@Model.CategoryTitle</li>
+</ol>
+@if (Model.TopNews.Count > 1)
+{
+    <div class="row">
+        <h1>ТОП розділу - @Model.CategoryTitle.ToLower()</h1>
+        @Html.DisplayFor(m => m.TopNews, "NewsMiddleBox")
+    </div>
+}
+<div class="col-md-12">
+        <h2>Останні новини розділу - @Model.CategoryTitle.ToLower()</h2>
+        <div id="lastNewsBox">
+            @{
+                Html.RenderAction("LastNewsBoxByCategory", new { page = 1 });
+            }
+        </div>
+        @Html.Partial("_PagesBox", Model.Pagination)
+</div>

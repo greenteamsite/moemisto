@@ -1,0 +1,25 @@
+﻿@model List<Moemisto.UI.Models.ArticleBaseVm>
+           
+@foreach (var newsItem in Model)
+{
+    <div class="row" style="margin-top: 10px;">
+        <div class="col-md-1">
+            <span class="newsTime">@Html.ActionLink(newsItem.DatePublish.ToString("t"), "Details", "News", new { url = newsItem.TranslitUrl, area = "" }, new { title = "Перегляд на сайті" })</span>
+        </div>
+        <div class="col-md-11">
+            <div class="media">
+                <div class="media-left">
+                    <a href="@Url.Action("NewsEdit", new { id = newsItem.ArticleId })" title="Редагувати">
+                        <img class="media-object placeListPic" src="@newsItem.PictureUrlSmall" alt="@newsItem.Title">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <a href="@Url.Action("NewsEdit", new { id = newsItem.ArticleId })" title="Редагувати">
+                        <h3 class="media-heading">@newsItem.Title</h3>
+                    </a>
+                    <span>@newsItem.ShortInfoCutted(100)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+}

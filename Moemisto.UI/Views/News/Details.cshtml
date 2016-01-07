@@ -1,0 +1,42 @@
+﻿@using Moemisto.UI.Helpers
+@model Moemisto.UI.Models.NewsDetailsVm
+@{
+    ViewBag.Title = Model.Title;
+}
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Головна", "Index", "Home")</li>
+    <li>@Html.ActionLink("Новини і статті про Київ", "Index", "News")</li>
+    <li class="active">@Model.Title</li>
+</ol>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <article itemscope itemtype="http://schema.org/NewsArticle">
+                <div style="background: url(@Model.PictureUrlTop); background-repeat: no-repeat; -ms-background-size: cover; background-size: cover; height: 0; padding-bottom: 50%; position: relative; padding-bottom: 50%; background-position: center;">
+                    <div class="newsDetailesHeader"></div>
+                    <h1 itemprop="headline" class="newsDetailesHeaderText">@Model.Title</h1>
+                    <span itemprop="dateline" class="newsDetailesHeaderDate">@Model.DatePublish.ToString("dd MMMM yyyy  hh:mm")</span>
+                </div>
+                <div class="divText">
+                    <span itemprop="description" class="newsPreText">@Model.ShortInfo</span>
+                </div>
+                @Html.Partial("_AdRightBox")
+                <div class="divText">
+                    <span itemprop="articleBody" class="newsText">@Html.Raw(Model.Info)</span>
+                </div>
+                <meta itemprop="datePublished" content="@HelperForVm.ToIso8601(Model.DatePublish)"/>
+                <meta itemprop="image" content="@string.Format("http://moemisto.com.ua{0}", Model.PictureUrlSmall)"/>
+                <h6>
+                   <b>Джерело:</b> <a href="http://moemisto.com.ua/" target="_blank" title="Новини Києва">Моє Місто</a>.
+                </h6>
+             </article>
+        </div>
+        @Html.Partial("Social/_ShareButtons")
+        <div class="row">
+            <h2>@Html.ActionLink("Інші цікаві новини Києва", "Index", "News")</h2>
+            @Html.DisplayFor(m => m.SimilarNews, "NewsMiddleBox")
+        </div>
+    </div>
+</div>
+@Html.Partial("_AdBottomDetailsBox")

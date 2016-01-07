@@ -1,0 +1,18 @@
+﻿@model List<Moemisto.UI.Models.SearchItemVm>
+
+@foreach (var item in Model)
+{
+    <div class="media">
+        <div class="media-left">
+            <a href="@Url.Action(item.ActionName, item.ControllerName, new { url = item.TranslitUrl })">
+                <img class="media-object placeListPic" src="@item.PictureUrl" alt="@item.Title">
+            </a>
+        </div>
+        <div class="media-body">
+            <a href="@Url.Action(item.ActionName, item.ControllerName, new { url = item.TranslitUrl })">
+                <h3 class="media-heading">@item.Title</h3>
+            </a>
+            @item.ShortInfo
+        </div>
+    </div>
+}

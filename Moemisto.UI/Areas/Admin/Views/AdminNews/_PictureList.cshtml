@@ -1,0 +1,17 @@
+﻿@model List<Moemisto.UI.Areas.Admin.Models.AdminPictureItemVm>
+<ul class="nav nav-pills nav-stacked">
+    @foreach (var pictureItem in Model)
+    {
+        <li role="presentation">
+            <a style="cursor: pointer" onclick="loadPreview('@pictureItem.PictureId', this)" >@pictureItem.Title</a>
+        </li>
+    }
+</ul>
+<script>
+    function loadPreview(pictureId, self) {
+        $("#pictureListBox > ul > li").removeClass("active");
+        $(self).parent().addClass("active");
+        $("#picturePreViewBox").load('@Url.Action("PicturePreView")' + '?pictureId=' + pictureId);
+    }
+</script>
+

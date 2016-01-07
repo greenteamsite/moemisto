@@ -1,0 +1,26 @@
+﻿@model Moemisto.UI.Models.PlaceListVm
+@{
+    ViewBag.Title = @Model.TypeTitle + " Києва";
+}
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Головна", "Index", "Home")</li>
+    <li>@Html.ActionLink("Місця Києва", "Index", "Place")</li>
+    <li>@Html.ActionLink(Model.GroupTitle, "Types", new { groupUrl = Model.GroupUrl })</li>
+    <li class="active">@Model.TypeTitle Києва</li>
+</ol>
+ 
+@foreach (var place in Model.PlaceList)
+{
+    <div class="media">
+        <div class="media-left">
+            <a href="@Url.Action("Details", new { url = place.TranslitUrl })">
+                <img class="media-object placeListPic" src="@place.PosterSmallUrl" alt="@place.Title">
+            </a>
+        </div>
+        <div class="media-body">
+            <a href="@Url.Action("Details", new { url = place.TranslitUrl })">
+                <h3 class="media-heading">@place.Title</h3></a>
+            <span>@place.Address</span>
+        </div>
+    </div>
+}

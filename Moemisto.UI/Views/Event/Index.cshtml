@@ -1,0 +1,74 @@
+﻿@model Moemisto.UI.Models.EventIndexVm
+@{
+    ViewBag.Title = "Цікаві події в Києві";
+}
+@Styles.Render("~/Content/datepicker")
+
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Головна", "Index", "Home")</li>
+    <li class="active">Події в Києві</li>
+</ol>
+<h2>Події в Києві</h2>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-inline">
+            <div class="form-group">
+                <div id="typesBox" class='input-group'>
+                    @{
+                        Html.RenderAction("TypeBox", new { eventDate = Model.StartDate, eventTypeUrl = Model.Url });
+                    }
+                </div>
+                <div class='input-group date' id='datetimepicker1'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div id="eventsBox" style="margin-top: 15px;">
+            @{
+                Html.RenderAction("EventsBox", new { eventDate = Model.StartDate, eventTypeUrl = Model.Url });
+            }
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        function ChangeUrl(page, url) {
+            if (typeof (history.pushState) != "undefined") {
+                var obj = { Page: page, Url: url };
+                history.pushState(obj, obj.Page, obj.Url);
+            } else {
+                alert("Browser does not support HTML5.");
+            }
+        }
+
+        $(function () {
+             var dp = $('#datetimepicker1').datetimepicker({
+                format: 'DD.MM.YYYY',
+                defaultDate: moment('@Model.StartDate', "DD_MM_YYYY"),
+                locale: 'uk'
+             });
+
+            window.loadNewsBox = function () {
+                $('body').loader('show');
+                var eventDate = dp.data("DateTimePicker").date().format("DD_MM_YYYY"),
+                    eventTypeUrl = $("#typeFilter").val();
+                $("#eventsBox").load('@Url.Action("EventsBox")' + '?eventDate=' + eventDate + '&eventTypeUrl=' + eventTypeUrl, function () {
+                    $('body').loader('hide');
+                });
+                $("#typesBox").load('@Url.Action("TypeBox")' + '?eventDate=' + eventDate + '&eventTypeUrl=' + eventTypeUrl);
+                ChangeUrl(1, "@string.Format("{0}://{1}/afisha/type/", Request.Url == null ? "" : Request.Url.Scheme, Request.Url == null ? "" : Request.Url.Authority)" + eventTypeUrl + "/" + eventDate);
+        }
+
+            dp.on("dp.change", loadNewsBox);
+        });
+
+        function typeFilterChange() {
+            window.loadNewsBox();
+        };
+    </script>
+}

@@ -1,0 +1,83 @@
+﻿@model Moemisto.UI.Models.HomeIndexVm
+@{
+    ViewBag.Title = "Київські новини та аналітика, повна афіша Києва, сервіси для киян";
+}
+
+@if (Model.TopNews.Count == 3)
+{
+    <div class="row">
+        @for (int i = 0; i < 3; i++)
+        {
+            var currTop = @Model.TopNews[i];
+            <div class="col-md-4 col-xs-12 @(i < 2 ? "col-sm-6" : "col-sm-12")" style="background: url(@currTop.PictureUrlSmall) 100% 100%; -ms-background-size: cover; background-size: cover; height: 250px;">
+                <p style="vertical-align: bottom; text-align: right">
+                    @if (Model.TopNews[i].CategoryId != 12)
+                    {
+                        @Html.ActionLink(currTop.TitleShort, "Details", "News", new {url = currTop.TranslitUrl}, new {@class = "btn btn-danger", style = "padding-left: 5px;"})
+                    }
+                    else
+                    {
+                        @Html.ActionLink(currTop.TitleShort, "Details", "Travel", new { url = currTop.TranslitUrl }, new { @class = "btn btn-danger", style = "padding-left: 5px;" })
+                    }
+                </p>
+            </div>
+        }
+        <hr/>
+    </div>
+}
+<div class="row">
+    <h2><span class="glyphicon glyphicon-list darkGreenColor"></span> @Html.ActionLink("Останні новини", "Index", "News")</h2>
+    @Html.DisplayFor(m => m.LastNews, "NewsMiddleBox")
+    <div id="moreNewsBox"></div>
+    <div class="col-md-12">
+        <button class="btn btn-default" style="color: #315b1a;" id="moreNewsBtn" onclick="getMoreNews()">Більше новин</button>
+    </div>
+</div>
+<div class="row">
+    <h2><span class="glyphicon glyphicon-bullhorn darkGreenColor"></span> @Html.ActionLink("Цікаві події в Києві","Index","Event")</h2>
+    @Html.DisplayFor(m => m.InterestedEvents, "EventsMiddleBox")
+</div>
+@*
+    <div class="row">
+        <h2><span class="glyphicon glyphicon-plane darkGreenColor"></span> @Html.ActionLink("Подорожі з Києва", "Index", "Travel")</h2>
+        @Html.DisplayFor(m => m.LastTravels, "TravelMiddleBox")
+    </div>
+*@
+
+<script>
+    function getMoreNews() {
+        var id = getLastNewsId();
+        console.debug(id);
+        $.get('@Url.Action("GetMoreNews")' + '/'+id, function (data) {
+            $("#moreNewsBox").append(data);
+        });
+    }
+
+    function getLastNewsId() {
+        var id = $(".last-news-id").last().val();
+        return id;
+    }
+</script>
+
+<script type="application/ld+json">
+    {
+        "@@context": "http://schema.org",
+        "@@type": "WebSite",
+        "name": "Моє місто",
+        "alternateName" : "Моє місто - київські новини та аналітика, повна афіша Києва, сервіси для киян",
+        "url": "http://moemisto.com.ua",
+        "sameAs": [
+        "https://www.facebook.com/moemisto.com.ua",
+        "https://twitter.com/Moe_Misto",
+        "http://vk.com/public98599948",
+        "https://plus.google.com/u/0/107917073945484031239/about"
+        ],
+        "potentialAction": {
+        "@@type": "SearchAction",
+        "target": "http://moemisto.com.ua/search?query={search_term_string}",
+        "query-input": "required name=search_term_string"
+        },
+        "author": "Моє місто",
+        "publisher": "Моє місто"
+    }
+</script>

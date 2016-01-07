@@ -1,0 +1,9 @@
+﻿@model Moemisto.UI.Areas.Admin.Models.AdminPictureItemVm
+
+<h4>@Model.Title (@(Model.Top ? "верхня" : "звичайна"))</h4>
+<div class="form-group">
+    <img src="@Model.Url" style="width: 250px;" />
+</div>
+<div class="form-group">
+    <button onclick="removePicture('@Model.PictureId')" class="btn btn-danger">Видалити</button>
+</div>

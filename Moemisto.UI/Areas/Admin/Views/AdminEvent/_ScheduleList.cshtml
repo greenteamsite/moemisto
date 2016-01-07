@@ -1,0 +1,26 @@
+﻿@model List<Moemisto.UI.Areas.Admin.Models.AdminEventScheduleBaseVm>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Місце проведення</th>
+            <th>Вартість з</th>
+            <th>Вартість по</th>
+            <th>Розклад</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var schedule in Model)
+        {
+            <tr>
+                <td>@schedule.Place.Title</td>
+                <td>@schedule.PriceFrom.ToString("C0")</td>
+                <td>@schedule.PriceTo.ToString("C0")</td>
+                <td>@schedule.GetStartEventsStr</td>
+                <td><button class="btn btn-default" onclick="editSchedule('@schedule.EventScheduleId')" title="Редагувати"><span class="glyphicon glyphicon-pencil"></span></button></td>
+                <td><button class="btn btn-default" onclick="removeSchedule('@schedule.EventScheduleId')" title="Видалити"><span class="glyphicon glyphicon-remove-circle"></span></button></td>
+            </tr>
+        }
+    </tbody>
+</table>

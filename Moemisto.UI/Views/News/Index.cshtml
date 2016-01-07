@@ -1,0 +1,33 @@
+﻿@model Moemisto.UI.Models.NewsIndexVm
+@{
+    ViewBag.Title = "Новини і статті про Київ";
+}
+@Scripts.Render("~/bundles/pagination")
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Головна", "Index", "Home")</li>
+    <li class="active">Новини і статті про Київ</li>
+</ol>
+<div class="row">
+    <h1>ТОП новини і статті Києва</h1>
+    @Html.DisplayFor(m => m.TopNews, "NewsMiddleBox")
+</div>
+<div class="col-md-12">
+    <div class="col-md-6">
+        <h2>Останні київські новини</h2>
+        <div id="lastNewsBox">
+            @{
+                Html.RenderAction("LastNewsBox", new { page = 1 });
+            }
+        </div>
+        @Html.Partial("_PagesBox", Model.Pagination)
+    </div>
+    <div class="col-md-6 bgGrey">
+        <h2>Статті про Київ</h2>
+        <div id="lastArticleBox">
+            @{
+                Html.RenderAction("LastArticleBox", new { page = 1 });
+            }
+        </div>
+        @Html.Partial("_PagesBox", Model.PaginationArticle)
+    </div>
+</div>

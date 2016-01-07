@@ -1,0 +1,181 @@
+﻿@model Moemisto.UI.Areas.Admin.Models.AdminEventScheduleBaseVm
+
+<div class="row" style="margin-top: 20px;">
+    @using (Ajax.BeginForm("EventScheduleItem", new { }, new AjaxOptions() { HttpMethod = "POST" }, new { id = "eventScheduleItemForm", @class = "form-horizontal" }))
+    {
+        @Html.HiddenFor(m => m.EventId)
+        @Html.HiddenFor(m => m.EventScheduleId)
+        <div class="col-md-3">
+            <div class="form-group">
+                @Html.LabelFor(m => m.PriceFrom, new { @class = "col-sm-7 control-label" })
+                <div class="col-sm-5">
+                    @Html.TextBoxFor(m => m.PriceFrom, new { placeholder = "Вартість з", @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.PriceTo, new { @class = "col-sm-7 control-label" })
+                <div class="col-sm-5">
+                    @Html.TextBoxFor(m => m.PriceTo, new { placeholder = "Вартість по", @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="form-group">
+                <div class='input-group date' id='datetimepicker2'>
+                    @Html.TextBox("addTimeInput", "", new { placeholder = "Дата та час", @class = "form-control" })
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="checkbox-inline">
+                    <input onclick="enableTimePeriodFn()" id="enableTimePeriod" name="enableTimePeriod" placeholder="по Дату" type="checkbox" value="true">
+                    Режим періодів дат та часів
+                </label>
+            </div>
+            <div id="periodDateBox" style="display: none">
+                <div class="form-group">
+                    <div class='input-group date' id='datetimepickerFrom'>
+                        @Html.TextBoxFor(m => m.AddDatePeriodFromInput, new { placeholder = "з Дати", @class = "form-control" })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class='input-group date' id='datetimepickerTo'>
+                        @Html.TextBoxFor(m => m.AddDatePeriodToInput, new { placeholder = "по Дату", @class = "form-control" })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.TextAreaFor(m => m.AddTimesPeriodInput, new { placeholder = "Час - hh:mm, hh:mm", @class = "form-control", rows = 3 })
+                </div>
+            </div>
+            <div class="form-group">
+                <button onclick="addTime()" type="button" class="btn btn-default">Додати час</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <ul id="timeList" class="list-group">
+                @for (int i = 0; i < Model.StartEventList.Count; i++)
+                {
+                    <li class="list-group-item" style="padding: 5px;">
+                        <button type="button" class="badge" onclick="removeTime(this)"><span class="glyphicon glyphicon-remove-circle" title="Знищити"></span></button>
+                        @Html.TextBoxFor(m => m.StartEventList[i], new { id = "", @class = "form-control input-sm", style = "width: 180px;" })
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+</div>
+
+
+<script>
+    $(function() {
+        $('#datetimepicker2').datetimepicker({
+            sideBySide: true,
+            locale: 'uk',
+            defaultDate: new Date()
+        });
+        $('#datetimepickerFrom').datetimepicker({
+            format: 'DD.MM.YYYY',
+            defaultDate: new Date(),
+            locale: 'uk'
+        });
+        $('#datetimepickerTo').datetimepicker({
+            format: 'DD.MM.YYYY',
+            defaultDate: new Date(),
+            locale: 'uk'
+        });
+        $('#editScheduleModal').modal('hide');
+
+        $('#eventScheduleItemForm').ajaxForm({
+            success: function() {
+                $('#editScheduleModal').modal('hide');
+                $("#scheduleListBox").load('@Url.Action("ScheduleList")' + '?eventid=@Model.EventId');
+            }
+        });
+        if ('@Model.EnableTimePeriod' === 'True') {
+            $("#enableTimePeriod").prop("checked", "checked");
+            enableTimePeriodFn();
+        }
+    });
+
+    function addDateSingle(time) {
+        var lastInput = $("#timeList li:last-child > input");
+        if (lastInput.length > 0) {
+            var lastName = lastInput.prop("name");
+            debugger;
+            var indexMas = lastName.substr(lastName.indexOf("[") + 1).replace("]", "");
+            var newIndexMas = parseInt(indexMas) + 1;
+            var newName = lastName.substr(0, lastName.indexOf("[") + 1) + newIndexMas + "]";
+            var lastInputHtml = $("#timeList li:last-child")[0].outerHTML.replace(lastName, newName);
+            $("#timeList").append(lastInputHtml);
+            $("input[name='" + newName + "']").val(time);
+        } else {
+            var emptyFirst = '<li class="list-group-item"><button type="button" class="badge" onclick="removeTime(this)"><span class="glyphicon glyphicon-remove-circle" title="Знищити"></span></button><input class="form-control input-sm" data-val="true" data-val-date="The field DateTime must be a date." data-val-required="The DateTime field is required." name="StartEventList[0]" style="width: 180px;" type="text" value=""></li>';
+            $("#timeList").append(emptyFirst);
+            $("input[name='StartEventList[0]']").val(time);
+        }
+    }
+
+    function addDatePeriod() {
+        var dateFrom = moment($("#AddDatePeriodFromInput").val(), 'DD.MM.YYYY');
+        var dateTo = moment($("#AddDatePeriodToInput").val(), 'DD.MM.YYYY');
+        var timeString = $("#AddTimesPeriodInput").val();
+        debugger;
+        timeString = timeString.replace(new RegExp(";", "g"), ",");
+        var masTimes = timeString.split(",");
+        var countDays = dateTo.diff(dateFrom, 'days') + 1;
+        for (var i = 0; i < countDays; i++) {
+            for (var j = 0; j < masTimes.length ; j++) {
+                var time = masTimes[j].trim();
+                var hour = time.substr(0, 2);
+                var minute = time.substr(3, 2);
+                var dateTime = dateFrom.clone();
+                if (hour !== "" && minute !== "")
+                {
+                    dateTime.add(hour, 'h').add(minute, 'm');
+                }
+                addDateSingle(dateTime.format('DD.MM.YYYY HH:mm'));
+            }
+            dateFrom.add(1, 'd');
+        }
+
+    }
+
+    function addTime() {
+        if ($("#enableTimePeriod").prop("checked")) {
+            addDatePeriod();
+        } else {
+            var time = $("#addTimeInput").val();
+            addDateSingle(time);
+        }
+    }
+
+    function removeTime(self) {
+        $(self).parent().remove();
+        reOrderTimeInputs();
+    }
+
+    function reOrderTimeInputs() {
+        $("input[name^='StartEventList']").each(function (index) {
+            this.name = "StartEventList[" + index + "]";
+        });
+    }
+
+    function enableTimePeriodFn() {
+        if ($("#enableTimePeriod").prop("checked"))
+        {
+            $("#periodDateBox").show();
+            $("#datetimepicker2").hide();
+        } else {
+            $("#periodDateBox").hide();
+            $("#datetimepicker2").show();
+        }
+    }
+</script>

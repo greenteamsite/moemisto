@@ -1,0 +1,28 @@
+﻿@using Moemisto.Data.Entities;
+@model List<Event>
+@{
+    ViewBag.Title = "Нова подія";
+}
+
+<div>
+    <div>
+        <h2>Нова подія</h2>
+    </div>
+    <div>
+        <form method="post" enctype="multipart/form-data" action="/Event/Create">
+            <input type="file" name="PosterUrl" accept="image/*" size="1" />
+            <input type="text" name="Title" /><br />
+            <input type="datetime" name="StartEvent" /><br />
+            <input type="text" name="PriceFrom" /><br />
+            <input type="text" name="PriceTo" /><br />
+            <select>
+                @foreach(var t in Model)
+                {
+                    <option value="@t">@t.Title</option>
+                }
+            </select>
+          
+        </form>
+    </div>
+</div>
+

@@ -1,0 +1,44 @@
+﻿@model Moemisto.UI.Areas.Admin.Models.AdminEventScheduleItemVm
+
+<div class="modal fade" id="editScheduleModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="float: right;">Закрити</button>
+                <button type="submit" form="eventScheduleItemForm" class="btn btn-primary" style="float: right; margin-right: 10px;">Зберегти зміни</button>
+                <h4 class="modal-title">@((Model.ScheduleId == 0 ? "Додавання" : "Редагування") + " розкладу")</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <span style="font-size: small;" id="placegroupCaption">@Model.PlaceTypeGroupFirst.Text</span>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" style="font-size: small;" aria-labelledby="dropdownMenu1">
+                                @foreach (var placetypeGroup in Model.PlaceTypeGroups)
+                                {
+                                    <li><a href="#" onclick="placesTypeGroupChange('@placetypeGroup.Value', this)">@placetypeGroup.Text</a></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="placeTypesBox" class="form-group">
+                        @{ Html.RenderAction("PlaceTypeBox", new { typegroupid = Model.PlaceTypeGroupFirst.Value }); }
+                    </div>
+                    <div id="placesByTypeBox" class="form-group">
+                        @{ Html.RenderAction("PlacesByType", new { typeId = Model.PlaceTypeFirst.Value, typegroupid = Model.PlaceTypeGroupFirst.Value, scheduleid = Model.ScheduleId }); }
+                    </div>
+                </div>
+                <div id="scheduleEditBox">
+                    @{ Html.RenderAction("ScheduleEdit", new { scheduleid = Model.ScheduleId, eventId = Model.EventId }); }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="eventScheduleItemForm" class="btn btn-primary">Зберегти зміни</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрити</button>
+            </div>
+        </div>
+    </div>
+</div>

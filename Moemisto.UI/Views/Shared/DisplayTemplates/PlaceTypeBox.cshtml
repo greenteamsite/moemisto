@@ -1,0 +1,10 @@
+﻿@model List<Moemisto.UI.Models.PlaceTypeBaseVm>
+
+@foreach (var group in Model)
+{
+    <div class="col-xs-6 col-md-3 col-sm-6">
+        <div class="thumbnail placePic" style="background-image: url(@group.ImageUrl);">
+            <p style="vertical-align: bottom; text-align: right"><a class="btn btn-warning btn-lg" href="@Url.Action("List","Place", new { groupUrl = group.GroupUrl, typeUrl = group.TranslitUrl })">@group.Title</a></p>
+        </div>
+    </div>
+}

@@ -1,0 +1,48 @@
+﻿@model Moemisto.UI.Models.TravelIndexVm 
+@{
+    ViewBag.Title = "Статті про подорожі";
+}
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Головна", "Index", "Home")</li>
+    <li class="active">Статті про подорожі Києвом та з Києва</li>
+</ol>
+<div class="row">
+    <div class="col-md-12">
+        <h1>@Html.ActionLink("ТОП публікацій", "Index", "Travel")</h1>
+        @Html.DisplayFor(m => m.TopTravels, "TravelMiddleBox")
+    </div>
+</div>
+    <div class="col-md-9">
+        <h2>Статті про подорожі Києвом та з Києва</h2>
+        @foreach (var news in Model.LastTravels)
+        {
+            <ul class="media-list">
+                <li class="media">
+                    <div class="media-left">
+                        <a href="@Url.Action("Details", "Travel", new { url = news.TranslitUrl })" title="@news.Title">
+                            <img class="media-object articlesListPicture" src="@news.PictureUrlSmall" alt="@(String.IsNullOrEmpty(news.PictureUrlSmall) ? "" : news.Title)">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h3 class="media-heading">@Html.ActionLink(news.Title, "Details", "Travel", new { url = news.TranslitUrl }, new { })</h3>
+                        <p>@news.ShortInfo</p>
+                    </div>
+                </li>
+            </ul>
+        } 
+        <nav>
+            <ul class="pagination">
+                <li class="disabled">
+                    <span>
+                        <span aria-hidden="true">&laquo;</span>
+                    </span>
+                </li>
+                <li class="active">
+                    <span>1 <span class="sr-only">(current)</span></span>
+                </li>
+                ...
+            </ul>
+        </nav>
+    </div>
+    <div class="col-md-3">
+    </div>

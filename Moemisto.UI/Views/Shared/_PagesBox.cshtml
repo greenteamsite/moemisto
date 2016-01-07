@@ -1,0 +1,23 @@
+﻿@model Moemisto.UI.Models.PaginationVm
+<nav id ="@Model.Id">
+    <ul class="pagination">
+        <li class="disabled">
+            <a href="javascript:void(0);" aria-label="Previous" onclick="changePage(this, '@Model.Id', '@Model.CountVisiblePages', '@Model.CountPages', '@Model.Url','@Model.IdBox')">
+                <span aria-hidden="true">
+                    &laquo;
+                </span>
+            </a>
+        </li>
+        @for (int i = 1; i <= Model.CountVisiblePages; i++)
+        {
+            <li id="@(Model.Id+"_"+i.ToString())" @(i > 1 ? "" : "class=active")>
+                <a href="javascript:void(0);" onclick="changePage(this, '@Model.Id', '@Model.CountVisiblePages', '@Model.CountPages', '@Model.Url','@Model.IdBox')">@i</a>
+            </li>
+        }
+        <li>
+            <a href="javascript:void(0);" aria-label="Next" onclick="changePage(this, '@Model.Id', '@Model.CountVisiblePages', '@Model.CountPages', '@Model.Url','@Model.IdBox')">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>

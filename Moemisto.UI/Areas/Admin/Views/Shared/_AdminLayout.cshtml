@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Адмінка - Моє Місто - @ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/css-admin")
+    @Styles.Render("~/Content/datepicker")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+
+<body>
+    <div id="topNavbarBox" class="navbar navbar-static-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <a href="@Url.Action("Index","Home", new { area = "" })"><img width="270" src="/Images/logo.jpg" /></a>
+                </div>
+                <div class="col-md-8 col-sm-8 col-xs-12" style="margin-top: 10px;">
+                        @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="navbar navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink(" ", "Index", "AdminHome", new{}, new { @class = "navbar-brand glyphicon glyphicon-home darkGreenColor", style = "font-size: 33px; font-weight: bold; margin-top: 10px;", title = "Перша сторінка" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="@Url.Action("Index", "AdminNews")">
+                            <span class="menuTopText">Статті, новини</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "AdminEvent")">
+                            <span class="menuTopText">Афіша подій</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "AdminPlace")">
+                            <span class="menuTopText">Місця</span>
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+<div class="container body-content">
+    @RenderBody()
+    <hr/>
+    <footer>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 divFooter">
+                <span class="footer1">2015 - Адмінка Мого Міста</span>
+            </div>
+        </div>
+    </footer>
+</div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/ajax")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/datepicker")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
